@@ -1,0 +1,212 @@
+//import section
+
+import java_cup.runtime.*;
+import java.io.*;
+
+parser code {:
+   
+   public static void main( String[] args ) {
+      try {
+		   FileReader file = new FileReader( args[0] );
+		   Scanner scanner = new Lexer( file );
+		   Parser parser = new Parser( scanner );
+		   parser.debug_parse();
+	  }
+	  catch( Exception e ) {
+		   System.out.println(e);
+	  }
+   }
+
+:};
+
+//Terminal symbols
+terminal MAIN, INTEGER, REAL, CHAR, READ, WRITE, PLUS, SUB, MUL, DIV, GREATER, LESS, GREATEROREQUAL, LESSOREQUAL, EQUAL, DIFFERENT, AND, OR, BOOL, REPEAT, UNTIL;
+terminal ID, CONST, SEMI, DOTDOT, COMMA, ASSIGN, LEFTPAR, RIGHTPAR, LEFTBRACE, RIGHTBRACE;
+
+//Nonterminal symbols
+non terminal Program, Block, VarDecl, Type, NameList;
+non terminal AndExpression, ArExpression, RelExpression, Statement, StatementList, Expression, VarList, ExpressionList;
+non terminal RelOp, Term, Factor;
+
+//Grammar
+
+Program ::= MAIN LEFTPAR RIGHTPAR Block 
+            {:
+               System.out.println( "Redukcija 1." );
+            :};
+
+Block ::= LEFTBRACE VarList StatementList RIGHTBRACE
+             {:
+                System.out.println( "Redukcija 2." );
+             :};
+
+VarList ::= VarList VarDecl
+             {:
+                System.out.println( "Redukcija 3." );
+             :}
+             | VarDecl
+             {:
+                System.out.println( "Redukcija 4." );
+             :};
+             
+VarDecl ::= NameList DOTDOT Type SEMI
+             {:
+                System.out.println( "Redukcija 5." );
+             :};
+             
+NameList ::= NameList COMMA ID
+             {:
+                System.out.println( "Redukcija 6." );
+             :}
+             | ID
+             {:
+                System.out.println( "Redukcija 7." );
+             :};
+             
+Type ::= INTEGER
+             {:
+                System.out.println( "Redukcija 8." );
+             :}
+             | CHAR
+             {:
+                System.out.println( "Redukcija 9." );
+             :}
+             | REAL
+             {:
+                System.out.println( "Redukcija 10." );
+             :}
+             | BOOL
+             {:
+                System.out.println( "Redukcija 11." );
+             :};
+             
+StatementList ::= StatementList Statement
+             {:
+                System.out.println( "Redukcija 12." );
+             :}
+             | Statement
+             {:
+                System.out.println( "Redukcija 13." );
+             :};
+             
+Statement ::= REPEAT StatementList UNTIL Expression SEMI
+             {:
+                System.out.println( "Redukcija 14." );
+             :}
+             | ID ASSIGN Expression SEMI
+             {:
+                System.out.println( "Redukcija 15." );
+             :}
+             | READ LEFTPAR NameList RIGHTPAR SEMI
+             {:
+                System.out.println( "Redukcija 16." );
+             :}
+             | WRITE LEFTPAR ExpressionList RIGHTPAR SEMI
+             {:
+                System.out.println( "Redukcija 17." );
+             :}
+             | Block
+             {:
+                System.out.println( "Redukcija 18." );
+             :};
+             
+Expression ::= Expression OR AndExpression
+             {:
+                System.out.println( "Redukcija 19." );
+             :}
+             | AndExpression
+             {:
+                System.out.println( "Redukcija 20." );
+             :};
+             
+AndExpression ::= AndExpression AND RelExpression
+             {:
+                System.out.println( "Redukcija 21." );
+             :}
+             | RelExpression
+             {:
+                System.out.println( "Redukcija 22." );
+             :};
+             
+RelExpression ::= ArExpression RelOp ArExpression
+             {:
+                System.out.println( "Redukcija 23." );
+             :}
+             | ArExpression
+             {:
+                System.out.println( "Redukcija 24." );
+             :};
+             
+RelOp ::= LESS
+             {:
+                System.out.println( "Redukcija 25." );
+             :}
+             | LESSOREQUAL
+             {:
+                System.out.println( "Redukcija 26." );
+             :}
+             | EQUAL
+             {:
+                System.out.println( "Redukcija 27." );
+             :}
+             | DIFFERENT
+             {:
+                System.out.println( "Redukcija 28." );
+             :}
+             | GREATER
+             {:
+                System.out.println( "Redukcija 29." );
+             :}
+             | GREATEROREQUAL
+             {:
+                System.out.println( "Redukcija 30." );
+             :};
+             
+ArExpression ::= ArExpression PLUS Term
+             {:
+                System.out.println( "Redukcija 31." );
+             :}
+             | ArExpression SUB Term
+             {:
+                System.out.println( "Redukcija 32." );
+             :}
+             | Term
+             {:
+                System.out.println( "Redukcija 33." );
+             :};
+             
+Term ::= Term MUL Factor
+             {:
+                System.out.println( "Redukcija 34." );
+             :}
+             | Term DIV Factor
+             {:
+                System.out.println( "Redukcija 35." );
+             :}
+             | Factor
+             {:
+                System.out.println( "Redukcija 36." );
+             :};
+             
+Factor ::= ID
+             {:
+                System.out.println( "Redukcija 37." );
+             :}
+             | CONST
+             {:
+                System.out.println( "Redukcija 38." );
+             :}
+             | LEFTPAR Expression RIGHTPAR
+             {:
+                System.out.println( "Redukcija 39." );
+             :};
+             
+ExpressionList ::= ExpressionList COMMA Expression
+             {:
+                System.out.println( "Redukcija 40." );
+             :}
+             | Expression
+             {:
+                System.out.println( "Redukcija 41." );
+             :};
+             
